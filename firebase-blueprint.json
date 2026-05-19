@@ -1,0 +1,93 @@
+{
+  "entities": {
+    "UserPublic": {
+      "title": "User Public Profile",
+      "description": "Publicly accessible user information.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The unique ID of the user." },
+        "displayName": { "type": "string", "description": "The user's display name." },
+        "lastWorkoutId": { "type": "string", "description": "ID of the last workout performed." },
+        "lastWorkoutDate": { "type": "string", "format": "date-time", "description": "Timestamp of the last workout." }
+      },
+      "required": ["userId"]
+    },
+    "UserPrivate": {
+      "title": "User Private Info",
+      "description": "Sensitive user information restricted to the owner.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "description": "User's email address." }
+      },
+      "required": ["email"]
+    },
+    "ExerciseWeight": {
+      "title": "Exercise Weight Log",
+      "description": "Tracks the last used weight for an exercise for a user.",
+      "type": "object",
+      "properties": {
+        "exerciseId": { "type": "string" },
+        "weight": { "type": "number" },
+        "reps": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["exerciseId", "weight", "reps", "updatedAt"]
+    },
+    "WorkoutSession": {
+      "title": "Workout Session",
+      "description": "A record of a completed workout session.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "workoutId": { "type": "string" },
+        "workoutName": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "exercises": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "exerciseId": { "type": "string" },
+              "exerciseName": { "type": "string" },
+              "weight": { "type": "number" },
+              "reps": { "type": "number" }
+            }
+          }
+        }
+      },
+      "required": ["userId", "workoutId", "date", "exercises"]
+    },
+    "CustomWorkouts": {
+      "title": "Custom Workouts Configuration",
+      "description": "User's customized list of workouts and exercise order.",
+      "type": "object",
+      "properties": {
+        "workouts": { "type": "array", "description": "Array of workout configurations." },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["workouts", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/public/prof": {
+      "schema": "UserPublic",
+      "description": "Public profile for a user."
+    },
+    "/users/{userId}/private/info": {
+      "schema": "UserPrivate",
+      "description": "Private sensitive info for a user."
+    },
+    "/users/{userId}/weights/{exerciseId}": {
+      "schema": "ExerciseWeight",
+      "description": "Tracking weights per exercise for a user."
+    },
+    "/users/{userId}/sessions/{sessionId}": {
+      "schema": "WorkoutSession",
+      "description": "Completed workout sessions for a user."
+    },
+    "/users/{userId}/config/workouts": {
+      "schema": "CustomWorkouts",
+      "description": "Custom workouts configuration document."
+    }
+  }
+}

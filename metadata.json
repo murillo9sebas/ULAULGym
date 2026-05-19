@@ -1,0 +1,6 @@
+{
+  "name": "NordicLift",
+  "description": "An ultra-minimalist fitness tracker inspired by Scandinavian design, focusing on clarity and weight progression.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
