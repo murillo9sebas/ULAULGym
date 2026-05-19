@@ -37,7 +37,7 @@ import {
   Check
 } from 'lucide-react';
 import { FirebaseProvider, useAuth } from './components/FirebaseProvider';
-import { signInWithGoogle, auth } from './lib/firebase';
+import { signInWithGoogle, signInWithEmail, signUpWithEmail, auth } from './lib/firebase';
 import { WORKOUTS, EXERCISE_ALTERNATIVES } from './constants';
 import { 
   getLatestWeight, 
@@ -95,34 +95,144 @@ const Card = ({ children, className = "", onClick, ...props }: { children: React
 
 // --- Pages ---
 
-const LoginView = () => (
-  <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-white">
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="text-center max-w-sm"
-    >
-      <div className="w-16 h-16 bg-[#F5F5F7] rounded-2xl flex items-center justify-center mx-auto mb-8">
-        <Dumbbell className="w-8 h-8 text-black" />
-      </div>
-      <h1 className="text-4xl font-bold tracking-tight mb-4 tracking-[-0.03em]">NordicLift</h1>
-      <p className="text-[#8E8E93] mb-12 text-lg leading-relaxed">
-        A quiet, minimalist space for your strength journey. Track progression with clarity.
-      </p>
-      
-      {!auth ? (
-        <div className="p-4 bg-orange-50 border border-orange-100 rounded-xl text-orange-800 text-sm mb-6">
-          <p className="font-semibold mb-1">Configuration Needed</p>
-          Please complete the Firebase setup in the AI Studio panel to enable authentication and data storage.
+const LoginView = () => {
+  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleEmailAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      if (mode === 'signup') {
+        await signUpWithEmail(email, password, name.trim());
+      } else {
+        await signInWithEmail(email, password);
+      }
+    } catch (err: any) {
+      const msg: Record<string, string> = {
+        'auth/email-already-in-use': 'An account with this email already exists.',
+        'auth/invalid-email': 'Please enter a valid email address.',
+        'auth/weak-password': 'Password must be at least 6 characters.',
+        'auth/user-not-found': 'No account found with this email.',
+        'auth/wrong-password': 'Incorrect password.',
+        'auth/invalid-credential': 'Incorrect email or password.',
+        'auth/operation-not-allowed': 'Email sign-in is not enabled. Please contact the admin.',
+      };
+      setError(msg[err.code] ?? 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const inputClass = "w-full px-4 py-3 rounded-xl border border-[#EAEAEA] bg-[#F5F5F7] text-black placeholder-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-black/10 text-sm";
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-white">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-sm"
+      >
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-[#F5F5F7] rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <Dumbbell className="w-8 h-8 text-black" />
+          </div>
+          <h1 className="text-4xl font-bold tracking-[-0.03em] mb-2">NordicLift</h1>
+          <p className="text-[#8E8E93] text-base leading-relaxed">
+            A quiet, minimalist space for your strength journey.
+          </p>
         </div>
-      ) : (
-        <Button onClick={signInWithGoogle} className="w-full py-4 text-lg">
-          Continue with Google
-        </Button>
-      )}
-    </motion.div>
-  </div>
-);
+
+        {!auth ? (
+          <div className="p-4 bg-orange-50 border border-orange-100 rounded-xl text-orange-800 text-sm">
+            <p className="font-semibold mb-1">Configuration Needed</p>
+            Please complete the Firebase setup to enable authentication.
+          </div>
+        ) : (
+          <>
+            {/* Tab toggle */}
+            <div className="flex bg-[#F5F5F7] rounded-full p-1 mb-6">
+              {(['signin', 'signup'] as const).map((m) => (
+                <button
+                  key={m}
+                  onClick={() => { setMode(m); setError(''); }}
+                  className={`flex-1 py-2 rounded-full text-sm font-medium transition-all ${
+                    mode === m ? 'bg-white text-black shadow-sm' : 'text-[#8E8E93]'
+                  }`}
+                >
+                  {m === 'signin' ? 'Sign In' : 'Sign Up'}
+                </button>
+              ))}
+            </div>
+
+            {/* Email/password form */}
+            <form onSubmit={handleEmailAuth} className="flex flex-col gap-3 mb-4">
+              <AnimatePresence>
+                {mode === 'signup' && (
+                  <motion.div
+                    key="name"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Full name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required={mode === 'signup'}
+                      className={inputClass}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className={inputClass}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className={inputClass}
+              />
+              {error && (
+                <p className="text-red-500 text-xs text-center">{error}</p>
+              )}
+              <Button disabled={loading} className="w-full py-3 mt-1">
+                {loading ? 'Please wait…' : mode === 'signin' ? 'Sign In' : 'Create Account'}
+              </Button>
+            </form>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex-1 h-px bg-[#EAEAEA]" />
+              <span className="text-xs text-[#8E8E93]">or</span>
+              <div className="flex-1 h-px bg-[#EAEAEA]" />
+            </div>
+
+            {/* Google */}
+            <Button onClick={signInWithGoogle} variant="secondary" className="w-full py-3">
+              Continue with Google
+            </Button>
+          </>
+        )}
+      </motion.div>
+    </div>
+  );
+};
 
 interface CalendarHistoryViewProps {
   sessions: any[];
