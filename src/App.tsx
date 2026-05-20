@@ -144,7 +144,7 @@ const LoginView = () => {
           </div>
           <h1 className="text-4xl font-bold tracking-[-0.03em] mb-2">LUALU Gym</h1>
           <p className="text-[#8E8E93] text-base leading-relaxed">
-            A quiet, minimalist space for your strength journey.
+            No Apologies. Train Savage. Tenacity. Energy. Ambition. Motion. Obsession.
           </p>
         </div>
 
