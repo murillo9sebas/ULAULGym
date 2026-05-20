@@ -139,10 +139,10 @@ const LoginView = () => {
         className="w-full max-w-sm"
       >
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-[#F5F5F7] rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Dumbbell className="w-8 h-8 text-black" />
+          <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 overflow-hidden">
+            <img src="/logo.png" alt="LUALU Gym" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-4xl font-bold tracking-[-0.03em] mb-2">NordicLift</h1>
+          <h1 className="text-4xl font-bold tracking-[-0.03em] mb-2">LUALU Gym</h1>
           <p className="text-[#8E8E93] text-base leading-relaxed">
             A quiet, minimalist space for your strength journey.
           </p>
