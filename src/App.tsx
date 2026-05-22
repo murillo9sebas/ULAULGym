@@ -1245,7 +1245,17 @@ function AppContent() {
       getCustomWorkouts(user.uid)
         .then((custom) => {
           if (custom && Array.isArray(custom)) {
-            setWorkouts(custom);
+            const nameUpdates: Record<string, string> = {
+              "Walking Lunges": "Inner Thigh Abductors (close)",
+              "Standing Face Pulls": "Outer Thigh Abductor (open)",
+            };
+            const migrated = custom.map((w: any) => ({
+              ...w,
+              exercises: w.exercises.map((ex: any) =>
+                nameUpdates[ex.name] ? { ...ex, name: nameUpdates[ex.name] } : ex
+              )
+            }));
+            setWorkouts(migrated);
           } else {
             setWorkouts(WORKOUTS);
           }
