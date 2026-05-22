@@ -8,7 +8,7 @@ export const WORKOUTS = [
       { id: "leg-press", name: "Leg Press (Quad focused)", sets: 3, reps: "8-10" },
       { id: "db-rdl", name: "Dumbbell Romanian Deadlift", sets: 3, reps: "8-10" },
       { id: "leg-extensions", name: "Seated Leg Extensions", sets: 3, reps: "10-15" },
-      { id: "walking-lunges", name: "Walking Lunges", sets: 2, reps: "8-10/leg" },
+      { id: "walking-lunges", name: "Inner Thigh Abductors (close)", sets: 2, reps: "8-10/leg" },
       { id: "calf-raise", name: "Standing Weighted Calf Raise", sets: 3, reps: "10-15" }
     ]
   },
@@ -47,7 +47,7 @@ export const WORKOUTS = [
       { id: "hip-thrust", name: "Barbell Hip Thrust", sets: 3, reps: "10-15" },
       { id: "leg-curl", name: "Lying Leg Curls", sets: 3, reps: "10-15" },
       { id: "seated-calf", name: "Seated Weighted Calf Raise", sets: 3, reps: "10-15" },
-      { id: "face-pulls", name: "Standing Face Pulls", sets: 2, reps: "10" }
+      { id: "face-pulls", name: "Outer Thigh Abductor (open)", sets: 2, reps: "10" }
     ]
   },
   {
@@ -83,7 +83,7 @@ export const EXERCISE_ALTERNATIVES: Record<string, Array<{ id: string, name: str
     { id: "bulgarian-split", name: "Bulgarian Split Squats" }
   ],
   "walking-lunges": [
-    { id: "walking-lunges", name: "Walking Lunges" },
+    { id: "walking-lunges", name: "Inner Thigh Abductors (close)" },
     { id: "reverse-lunges", name: "Deficit Reverse Lunges" },
     { id: "step-ups", name: "Weighted Step-ups" }
   ],
@@ -158,7 +158,7 @@ export const EXERCISE_ALTERNATIVES: Record<string, Array<{ id: string, name: str
     { id: "calf-press", name: "Calf Press on Leg Press" }
   ],
   "face-pulls": [
-    { id: "face-pulls", name: "Standing Face Pulls" },
+    { id: "face-pulls", name: "Outer Thigh Abductor (open)" },
     { id: "rear-delt-fly", name: "Rear Delt Dumbbell Fly" },
     { id: "banded-pull-aparts", name: "Banded Pull-Aparts" }
   ],
