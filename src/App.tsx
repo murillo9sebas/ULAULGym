@@ -1248,6 +1248,7 @@ function AppContent() {
             const nameUpdates: Record<string, string> = {
               "Walking Lunges": "Inner Thigh Abductors (close)",
               "Standing Face Pulls": "Outer Thigh Abductor (open)",
+              "Flat DB Press": "Seated DB Press",
             };
             const migrated = custom.map((w: any) => ({
               ...w,
