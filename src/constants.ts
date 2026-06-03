@@ -172,8 +172,8 @@ export const EXERCISE_ALTERNATIVES: Record<string, Array<{ id: string, name: str
     { id: "chest-supported-t-bar", name: "Chest Supported T-Bar Row" },
     { id: "single-arm-lat-pullin", name: "Single Arm Lat Pullin" }
   ],
-  "flat-db": [
-    { id: "flat-db", name: "Flat DB Press" },
+  "seat-db": [
+    { id: "seat-db", name: "Seated DB Press" },
     { id: "weighted-dips-alt", name: "Weighted Dips" },
     { id: "hammer-strength-flat", name: "Flat Chest Press Machine" }
   ],
