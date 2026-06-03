@@ -58,7 +58,7 @@ export const WORKOUTS = [
     exercises: [
       { id: "incline-db", name: "Low Incline DB Press", sets: 3, reps: "8-10" },
       { id: "cable-row", name: "Seated Cable Row", sets: 3, reps: "8-10" },
-      { id: "flat-db", name: "Flat DB Press", sets: 2, reps: "8-10" },
+      { id: "seated-db", name: "Seated DB Press", sets: 2, reps: "8-10" },
       { id: "cable-lateral", name: "Cable Lateral Raise", sets: 3, reps: "15-20" },
       { id: "tri-ext", name: "Overhead Extensions", sets: 2, reps: "10-15" },
       { id: "db-curl", name: "Incline DB Curls", sets: 2, reps: "8-10" }
